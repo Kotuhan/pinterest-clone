@@ -4,8 +4,11 @@ import FontAwesome from 'react-fontawesome';
 
 import './style.css';
 
-export default ({ onClick }) => {
-  return <div className="footer">
-    footer
+export default ({ goBack }) => {
+  return <div className="back-button">
+    <FontAwesome
+      onClick={goBack}
+      name="chevron-left"
+    />
   </div>
 }

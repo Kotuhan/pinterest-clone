@@ -5,7 +5,8 @@ import FontAwesome from 'react-fontawesome';
 import './style.css';
 
 export default ({ onClick }) => {
-  return <div className="footer">
-    footer
+  return <div className="search-bar">
+    <input
+    />
   </div>
 }

@@ -1,8 +1,11 @@
 import React from 'react'
-import { push } from 'react-router-redux'
+import { goBack, push } from 'react-router-redux'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+
+import Header from '../header'
+import Footer from '../footer'
 
 import './style.css';
 
@@ -13,29 +16,41 @@ import {
   decrementAsync
 } from '../../modules/incrementing'
 
+const CATEGORIES = [
+  { label: 'Popular' },
+  { label: 'Popular1' },
+  { label: 'Popular2' },
+  { label: 'Popular3' },
+  { label: 'Popular4' },
+  { label: 'Popular5' },
+  { label: 'Popular6' },
+  { label: 'Popular7' },
+  { label: 'Popular7' },
+  { label: 'Popular8' },
+  { label: 'Popular9' },
+]
+
 const Categories = props => (
-  <div className="transition-item list-page">
-    <h1>Home</h1>
-    <p>Count: {props.count}</p>
-
-    <p>
-      <button onClick={props.increment} disabled={props.isIncrementing}>Increment</button>
-      <button onClick={props.incrementAsync} disabled={props.isIncrementing}>Increment Async</button>
-    </p>
-
-    <p>
-      <button onClick={props.decrement} disabled={props.isDecrementing}>Decrementing</button>
-      <button onClick={props.decrementAsync} disabled={props.isDecrementing}>Decrement Async</button>
-    </p>
-
-    <p><button onClick={() => props.changePage()}>Go to about page via redux</button></p>
+  <div className="categories-page">
+    <Header
+      type="main"
+      onClick={goBack}
+    />
+    <main className="categories-page-content">
+      <h2 className="main-category">Popular</h2>
+      <h3>All categories</h3>
+      <div className="all-categories">
+        {CATEGORIES.map((caregory, i) => {
+          return <Link key={i} to="category_123123">{caregory.label}</Link>
+        })}
+      </div>
+    </main>
+    <Footer />
   </div>
 )
 
 const mapStateToProps = state => ({
-  count: state.counter.count,
-  isIncrementing: state.counter.isIncrementing,
-  isDecrementing: state.counter.isDecrementing
+
 })
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -43,7 +58,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   incrementAsync,
   decrement,
   decrementAsync,
-  changePage: () => push('/category_123')
 }, dispatch)
 
 export default connect(
