@@ -17,17 +17,17 @@ import {
 } from '../../modules/incrementing'
 
 const CATEGORIES = [
-  { label: 'Popular' },
-  { label: 'Popular1' },
-  { label: 'Popular2' },
-  { label: 'Popular3' },
-  { label: 'Popular4' },
-  { label: 'Popular5' },
-  { label: 'Popular6' },
-  { label: 'Popular7' },
-  { label: 'Popular7' },
-  { label: 'Popular8' },
-  { label: 'Popular9' },
+  { label: "Women's Fashion", id: 'women'},
+  { label: "Women's Clothes", id: "womens-clothes" },
+  { label: "Beauty Products", id: 'womens-beauty '},
+  { label: "Men's Fashion", id: 'men' },
+  { label: 'Men\'s Shoes', id: "mens-shoes" },
+  { label: 'Nursery', id: "nursery-kids-and-baby" },
+  { label: 'Kitchen', id: 'kitchen' },
+  { label: 'Lighting', id: "accent-lighting" },
+  { label: 'Tabletop', id: 'dining' },
+  { label: 'Baby Gear', id: 'baby-gear' },
+  { label: "Home & Living", id: 'living' },
 ]
 
 const Categories = props => (
@@ -41,7 +41,7 @@ const Categories = props => (
       <h3>All categories</h3>
       <div className="all-categories">
         {CATEGORIES.map((caregory, i) => {
-          return <Link key={i} to="category_123123">{caregory.label}</Link>
+          return <Link key={i} to={`category_${caregory.id}`}>{caregory.label}</Link>
         })}
       </div>
     </main>
