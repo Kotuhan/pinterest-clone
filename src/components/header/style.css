@@ -3,3 +3,14 @@
   display: flex;
   justify-content: space-around;
   align-items: center; }
+  .header .search-bar {
+    padding: 0px 20px;
+    width: 100%;
+    height: 30px; }
+    .header .search-bar > input {
+      width: 100%;
+      background: grey;
+      height: 30px;
+      opacity: 0.1; }
+  .header .interact-button {
+    padding: 0px 20px; }
