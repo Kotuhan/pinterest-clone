@@ -16,12 +16,11 @@ class ScreensHoc extends Component {
     if (type === 'category') {
       return <Category id={id} history={history} location={location} />
     } else {
-      return <Item id={id} />
+      return <Item id={id} history={history} location={location}  />
     }
   }
 
   render() {
-    console.log('pasdfads', this.props)
     return this.chooseScreen()
   }
 }

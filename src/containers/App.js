@@ -13,7 +13,6 @@ class App extends Component {
       <div className="App">
         <main>
           <Route render={({location, history, match}) => {
-            console.log('history', history.action)
             const isBack = history.action === 'POP' ? 1 : -1
 
             return (

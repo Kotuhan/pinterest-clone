@@ -1,6 +1,6 @@
 
-export const CATEGORY_REQUEST = 'CATEGORY_REQUEST'
-export const CATEGORY_SUCCESS = 'CATEGORY_SUCCESS'
+export const ITEM_REQUEST = 'ITEM_REQUEST'
+export const ITEM_SUCCESS = 'ITEM_SUCCESS'
 
 const API_KEY = 'uid4961-26577031-68'
 const BODY = 'http://api.shopstyle.com/api/v2/'
@@ -12,16 +12,16 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case CATEGORY_REQUEST:
+    case ITEM_REQUEST:
       return {
         ...state,
         isFetching: true
       }
 
-    case CATEGORY_SUCCESS:
+    case ITEM_SUCCESS:
       return {
         ...state,
-        [action.id]: action.data.products,
+        [action.id]: action.data,
         isFetching: false
       }
 
@@ -31,20 +31,20 @@ export default (state = initialState, action) => {
 }
 
 
-export const requestCategory = (catId, offset = 0) => {
+export const requestItem = (itemId, offset = 0) => {
   return async dispatch => {
     dispatch({
-      type: CATEGORY_REQUEST
+      type: ITEM_REQUEST
     })
 
-    const response = await fetch(`${BODY}products?pid=${API_KEY}&cat=${catId}&offset=${offset}&limit=10`);
+    const response = await fetch(`${BODY}products/${itemId}?pid=${API_KEY}`);
 
     const data = await response.json();
 
     dispatch({
-      type: CATEGORY_SUCCESS,
-      data: data,
-      id: catId
+      type: ITEM_SUCCESS,
+      data,
+      id: itemId
     })
   }
 }

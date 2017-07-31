@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom'
+
 import {
   CellMeasurer,
   CellMeasurerCache,
@@ -8,15 +10,11 @@ import {
   AutoSizer
 } from 'react-virtualized';
 
-// Array of images with captions
-
-
-
 class Virtualized extends Component {
   constructor(props) {
     super(props)
 
-    this._columnCount = 0;
+    this._columnCount = 2;
 
     this._cache = new CellMeasurerCache({
       defaultHeight: 250,
@@ -33,7 +31,6 @@ class Virtualized extends Component {
     };
   }
 
-
   _calculateColumnCount = () => {
     const { columnWidth, gutterSize } = this.state;
 
@@ -41,7 +38,7 @@ class Virtualized extends Component {
   }
 
   _cellRenderer = ({ index, key, parent, style }) => {
-    const { items } = this.props;
+    const { items, openItem, location } = this.props;
     const { columnWidth } = this.state;
     const datum = items[index % items.length];
 
@@ -49,22 +46,23 @@ class Virtualized extends Component {
 
     return (
       <CellMeasurer cache={this._cache} index={index} key={key} parent={parent}>
-        <div
-          className="cell"
-          style={{
-            ...style,
-            width: columnWidth
-          }}
-        >
-          <img
-            src={datum.url}
+          <div
+            className="cell"
             style={{
-              height: datum.height,
-              width: datum.width
+              ...style,
+              width: columnWidth
             }}
-          />
-          <div>{datum.name}</div>
-        </div>
+            onClick={() => openItem(datum.id)}
+          >
+            <img
+              src={datum.url}
+              style={{
+                height: datum.height,
+                width: datum.width
+              }}
+            />
+            <div>{datum.name}</div>
+          </div>
       </CellMeasurer>
     );
   }
@@ -117,7 +115,7 @@ class Virtualized extends Component {
     return (
       <Masonry
         autoHeight={windowScrollerEnabled}
-        cellCount={1000}
+        cellCount={100}
         cellMeasurerCache={this._cache}
         cellPositioner={this._cellPositioner}
         cellRenderer={this._cellRenderer}

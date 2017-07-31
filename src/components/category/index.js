@@ -17,14 +17,18 @@ import {
 
 class Category extends Component {
   componentDidMount() {
-    console.log('this.props.id', this.props.id);
     this.props.requestCategory(this.props.id)
   }
 
+  openItem = (id) => {
+    const { location, history } = this.props;
+
+    history.push(`${location.pathname}/item_${id}`)
+  }
 
   render() {
     const { id, location, history, items } = this.props;
-    console.log('items', items)
+
     return (
       <div className="transition-item detail-page">
         <Header
@@ -33,7 +37,11 @@ class Category extends Component {
         />
         <main className="category-page-content">
           <h2 className="main-category">{this.props.id}</h2>
-          <Virtualized items={items || []} />
+          <Virtualized
+            items={items || []}
+            location={location.pathname}
+            openItem={this.openItem}
+          />
         </main>
         <Footer />
       </div>
@@ -44,10 +52,10 @@ class Category extends Component {
 const mapStateToProps = (state, ownProps) => {
   const formattedList = state.categories[ownProps.id]
     ? state.categories[ownProps.id].map(item => {
-        const { name, description, image } = item
+        const { name, description, image, id } = item
         const { height, width, url } = image.sizes.Medium
 
-        return { name, description, url, width, height }
+        return { name, description, url, width, height, id }
       })
     : []
 

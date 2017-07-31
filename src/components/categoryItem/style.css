@@ -1,0 +1,8 @@
+.item-page-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 20px;
+  overflow-y: auto;
+  flex-direction: column; }
