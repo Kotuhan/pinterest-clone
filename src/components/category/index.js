@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import Header from '../header'
 import Footer from '../footer'
 import RelatedCategories from '../relatedCategories'
+import loader from '../../assets/loader.gif'
 
 import Grid from '../grid'
 
@@ -17,6 +18,7 @@ import {
 } from '../../modules/categories'
 
 class Category extends Component {
+
   componentDidMount() {
     const { id, requestCategory, items } = this.props
 
@@ -43,7 +45,7 @@ class Category extends Component {
   }
 
   render() {
-    const { id, location, history, items, loadingMore, relatedCategories } = this.props;
+    const { id, location, history, items, loadingMore, relatedCategories, isFetching } = this.props;
 
     return (
       <div className="transition-item detail-page">
@@ -51,20 +53,30 @@ class Category extends Component {
           type="category"
           goBack={history.goBack}
         />
-        <main className="category-page-content">
-          <h2 className="main-category">{this.props.id}</h2>
-          <RelatedCategories
-            categories={relatedCategories}
-            openCategory={this.openCategory}
-          />
-          <Grid
-            items={items || []}
-            location={location.pathname}
-            openItem={this.openItem}
-            loadMore={this.loadMoreItems}
-            loadingMore={loadingMore}
-          />
-        </main>
+
+          {isFetching
+            ?
+              (
+                <img src={loader} />
+              )
+            :
+              (
+                <main className="category-page-content">
+                  <h2 className="main-category">{this.props.id}</h2>
+                  <RelatedCategories
+                    categories={relatedCategories}
+                    openCategory={this.openCategory}
+                  />
+                  <Grid
+                    items={items || []}
+                    location={location.pathname}
+                    openItem={this.openItem}
+                    loadMore={this.loadMoreItems}
+                    loadingMore={loadingMore}
+                  />
+                </main>
+              )
+          }
         <Footer />
       </div>
     );
@@ -78,6 +90,7 @@ const mapStateToProps = (state, ownProps) => {
     items: data.items || [],
     offset: data.offset || 0,
     isLoading: state.categories.isLoading,
+    isFetching: state.categories.isFetching,
     loadingMore: state.categories.loadingMore,
     relatedCategories: data.relatedCategories || []
   }
