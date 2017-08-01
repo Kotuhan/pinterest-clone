@@ -18,7 +18,6 @@ import {
 } from '../../modules/categories'
 
 class Category extends Component {
-
   componentDidMount() {
     const { id, requestCategory, items } = this.props
 
@@ -53,8 +52,7 @@ class Category extends Component {
           type="category"
           goBack={history.goBack}
         />
-
-          {isFetching
+          {isFetching || items.length === 0
             ?
               (
                 <img src={loader} />

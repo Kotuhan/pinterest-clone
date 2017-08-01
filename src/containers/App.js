@@ -11,7 +11,6 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <main>
           <Route render={({location, history, match}) => {
             const isBack = history.action === 'POP' ? 1 : -1
 
@@ -31,7 +30,6 @@ class App extends Component {
               );
             }}
           />
-        </main>
       </div>
     );
   }

@@ -4,19 +4,32 @@ import Waypoint from 'react-waypoint'
 
 import loader from '../../assets/loader.gif'
 
+import './style.css'
 
 class Grid extends Component {
+
+  state = {
+    hidden: true
+  }
+
+  show = () => {
+    setTimeout(() => this.setState({ hidden: false }), 700);
+  }
+
+  componentWillMount() {
+    this.show();
+  }
+
   renderItems = () => {
     const { items, openItem } = this.props
     return items.map(item =>
       (<div
         key={item.id}
-        style={{minHeight: '70px'}}
+        style={{minHeight: '100px'}}
         onClick={() => openItem(item.id)}
       >
         <img
           src={item.url}
-          style={{width: '50%'}}
         />
         <div>{item.name}</div>
       </div>)
@@ -43,6 +56,8 @@ class Grid extends Component {
 
   render() {
     const { loadingMore } = this.props
+
+    if (this.state.hidden) return <img className="loader" src={loader} />;
 
     return (
       <div style={{width: '100%'}}>

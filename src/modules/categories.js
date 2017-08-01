@@ -10,7 +10,7 @@ const BODY = 'http://api.shopstyle.com/api/v2/'
 
 
 const initialState = {
-  isFetching: false,
+  isFetching: true,
   loadingMore: false
 }
 
