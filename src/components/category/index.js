@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
 import { Route, Link, Switch } from 'react-router-dom'
 import { push } from 'react-router-redux'
-// import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
 
 import Header from '../header'
 import Footer from '../footer'
-import Virtualized from '../mansonry'
+import Grid from '../grid'
 
 import './style.css';
 
 import {
   requestCategory,
+  requestMoreItems,
 } from '../../modules/categories'
 
 class Category extends Component {
   componentDidMount() {
-    this.props.requestCategory(this.props.id)
+    const { id, requestCategory } = this.props
+
+    //wait for animation finish
+    setTimeout(() => requestCategory(id), 500)
   }
 
   openItem = (id) => {
@@ -26,8 +28,14 @@ class Category extends Component {
     history.push(`${location.pathname}/item_${id}`)
   }
 
+  loadMoreItems = () => {
+    const { id, requestMoreItems, offset } = this.props
+
+    requestMoreItems(id, offset)
+  }
+
   render() {
-    const { id, location, history, items } = this.props;
+    const { id, location, history, items, loadingMore } = this.props;
 
     return (
       <div className="transition-item detail-page">
@@ -37,10 +45,12 @@ class Category extends Component {
         />
         <main className="category-page-content">
           <h2 className="main-category">{this.props.id}</h2>
-          <Virtualized
+          <Grid
             items={items || []}
             location={location.pathname}
             openItem={this.openItem}
+            loadMore={this.loadMoreItems}
+            loadingMore={loadingMore}
           />
         </main>
         <Footer />
@@ -50,22 +60,19 @@ class Category extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const formattedList = state.categories[ownProps.id]
-    ? state.categories[ownProps.id].map(item => {
-        const { name, description, image, id } = item
-        const { height, width, url } = image.sizes.Medium
-
-        return { name, description, url, width, height, id }
-      })
-    : []
+  const data = state.categories[ownProps.id] || {};
 
   return {
-    items: formattedList
+    items: data.items || [],
+    offset: data.offset || 0,
+    isLoading: state.categories.isLoading,
+    loadingMore: state.categories.loadingMore
   }
 }
 
 const mapDispatchToProps = {
-  requestCategory
+  requestCategory,
+  requestMoreItems
 }
 
 export default connect(

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Route, Link, Switch } from 'react-router-dom'
 import { push } from 'react-router-redux'
-// import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
 
 import Header from '../header'
 import Footer from '../footer'
@@ -17,7 +15,8 @@ import {
 
 class CategoryItem extends Component {
   componentDidMount() {
-    this.props.requestItem(this.props.id)
+    // this.props.requestItem(this.props.id)
+    setTimeout(() => this.props.requestItem(this.props.id), 1000)
   }
 
   render() {

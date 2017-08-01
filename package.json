@@ -14,8 +14,10 @@
     "react-router-redux": "next",
     "react-router-transition": "^0.1.1",
     "react-scripts": "1.0.10",
+    "react-stack-grid": "^0.4.0",
     "react-sticky": "^6.0.1",
     "react-virtualized": "^9.9.0",
+    "react-waypoint": "^7.0.4",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"
   },
