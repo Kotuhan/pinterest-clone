@@ -8,7 +8,6 @@ import loader from '../../assets/loader.gif'
 class Grid extends Component {
   renderItems = () => {
     const { items, openItem } = this.props
-
     return items.map(item =>
       (<div
         key={item.id}
@@ -43,7 +42,8 @@ class Grid extends Component {
   }
 
   render() {
-    const { items, loadingMore } = this.props
+    const { loadingMore } = this.props
+
     return (
       <div style={{width: '100%'}}>
         <StackGrid
@@ -58,7 +58,6 @@ class Grid extends Component {
          </StackGrid>
          {loadingMore && <img src={loader} />}
       </div>
-
     );
   }
 }

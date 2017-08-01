@@ -26,8 +26,9 @@ export default (state = initialState, action) => {
       return {
         ...state,
         [action.id]: {
-          items: action.data,
-          offset: action.offset
+          items: action.items,
+          offset: action.offset,
+          relatedCategories: action.relatedCategories
         },
         isFetching: false
       }
@@ -42,7 +43,8 @@ export default (state = initialState, action) => {
       return {
         ...state,
         [action.id]: {
-          items: [...state[action.id].items, ...action.data],
+          ...state[action.id],
+          items: [...state[action.id].items, ...action.items],
           offset: action.offset
         },
         loadingMore: false
@@ -59,20 +61,39 @@ export const requestCategory = (catId, offset = 0) => {
       type: CATEGORY_REQUEST
     })
 
-    const response = await fetch(`${BODY}products?pid=${API_KEY}&cat=${catId}&offset=${offset}&limit=15`);
+    const [responseItems, responseRelated] = await Promise.all([
+      fetch(`${BODY}products?pid=${API_KEY}&cat=${catId}&offset=${offset}&limit=15`),
+      fetch(`${BODY}categories?pid=${API_KEY}&cat=${catId}`)
+    ]);
 
-    const data = await response.json();
+    const itemsData = await responseItems.json();
+    const relatedCategories = await responseRelated.json();
 
-    const formattedData = data.products.map(item => {
+    const formattedItemsData = itemsData.products.map(item => {
         const { name, description, image, id } = item
         const { height, width, url } = image.sizes.Medium
 
         return { name, description, url, width, height, id }
       })
 
+    const uniqueItems = [...new Set(formattedItemsData)];
+
+    //sometimes here may come over 300 categories
+    if (relatedCategories.categories.length > 10) {
+      relatedCategories.categories.length = 10
+    }
+
+    const formattedRelatedData = relatedCategories.categories.map(category => {
+        const { shortName, id } = category
+
+        return { name: shortName, id }
+      })
+
+
     dispatch({
       type: CATEGORY_SUCCESS,
-      data: formattedData,
+      relatedCategories: formattedRelatedData,
+      items: uniqueItems,
       offset: offset + 15,
       id: catId,
     })
@@ -99,7 +120,7 @@ export const requestMoreItems = (catId, offset = 0) => {
     dispatch({
       type: CATEGORY_MORE_SUCCESS,
       offset: offset + 15,
-      data: formattedData,
+      items: formattedData,
       id: catId
     })
   }

@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 
 import Header from '../header'
 import Footer from '../footer'
+import RelatedCategories from '../relatedCategories'
+
 import Grid from '../grid'
 
 import './style.css';
@@ -16,16 +18,22 @@ import {
 
 class Category extends Component {
   componentDidMount() {
-    const { id, requestCategory } = this.props
+    const { id, requestCategory, items } = this.props
 
     //wait for animation finish
-    setTimeout(() => requestCategory(id), 500)
+    items.length === 0 && setTimeout(() => requestCategory(id), 500)
   }
 
   openItem = (id) => {
     const { location, history } = this.props;
 
     history.push(`${location.pathname}/item_${id}`)
+  }
+
+  openCategory = (id) => {
+    const { location, history } = this.props;
+
+    history.push(`${location.pathname}/category_${id}`)
   }
 
   loadMoreItems = () => {
@@ -35,7 +43,7 @@ class Category extends Component {
   }
 
   render() {
-    const { id, location, history, items, loadingMore } = this.props;
+    const { id, location, history, items, loadingMore, relatedCategories } = this.props;
 
     return (
       <div className="transition-item detail-page">
@@ -45,6 +53,10 @@ class Category extends Component {
         />
         <main className="category-page-content">
           <h2 className="main-category">{this.props.id}</h2>
+          <RelatedCategories
+            categories={relatedCategories}
+            openCategory={this.openCategory}
+          />
           <Grid
             items={items || []}
             location={location.pathname}
@@ -66,7 +78,8 @@ const mapStateToProps = (state, ownProps) => {
     items: data.items || [],
     offset: data.offset || 0,
     isLoading: state.categories.isLoading,
-    loadingMore: state.categories.loadingMore
+    loadingMore: state.categories.loadingMore,
+    relatedCategories: data.relatedCategories || []
   }
 }
 

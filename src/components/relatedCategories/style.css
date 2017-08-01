@@ -1,0 +1,21 @@
+.related-categories {
+  width: 100%;
+  overflow-x: auto;
+  min-height: 80px;
+  display: flex;
+  margin-bottom: 20px; }
+  .related-categories .overflow-wrapper {
+    width: 100%;
+    display: flex; }
+    .related-categories .overflow-wrapper .ralated-category {
+      min-height: 75px;
+      min-width: 75px;
+      width: 75px;
+      display: flex;
+      margin: 0px 5px;
+      align-items: center;
+      border: 3px solid;
+      justify-content: center;
+      border-radius: 15%; }
+      .related-categories .overflow-wrapper .ralated-category:hover {
+        background: antiquewhite; }
