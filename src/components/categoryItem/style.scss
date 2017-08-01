@@ -1,9 +1,18 @@
 .item-page-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   padding: 0 20px;
   overflow-y: auto;
-  flex-direction: column;
+
+
+  .item-info {
+    padding: 20px;
+  }
+
+  .related-text {
+    padding-bottom: 20px;
+    font-size: 20px;
+    text-align: left;
+  }
 }

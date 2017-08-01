@@ -5,22 +5,35 @@ import { connect } from 'react-redux'
 
 import Header from '../header'
 import Footer from '../footer'
-import Virtualized from '../mansonry'
+import Grid from '../grid'
 
 import './style.css';
 
 import {
   requestItem,
+  requestMoreItems
 } from '../../modules/items'
 
 class CategoryItem extends Component {
   componentDidMount() {
-    // this.props.requestItem(this.props.id)
-    setTimeout(() => this.props.requestItem(this.props.id), 1000)
+    !this.props.item && setTimeout(() => this.props.requestItem(this.props.id), 500)
+  }
+
+  loadMoreItems = () => {
+    const { id, requestMoreItems, offset } = this.props
+
+    requestMoreItems(id, offset)
+  }
+
+  openItem = (id) => {
+    const { location, history } = this.props;
+
+    history.push(`${location.pathname}/item_${id}`)
   }
 
   render() {
-    const { id, location, history, item } = this.props;
+    const { id, location, history, item, relatedItems, loadingMore } = this.props;
+
     return (
       <div className="transition-item detail-page">
         <Header
@@ -29,8 +42,20 @@ class CategoryItem extends Component {
         />
           {item &&
             <main className="item-page-content">
-              <img src={item.image.sizes.Medium.url} />
-              <h2 className="item-name">{item.name}</h2>
+              <div className="item-info">
+                <img src={item.url} />
+                <h3 className="item-name">{item.name}</h3>
+              </div>
+              <div className="related-text">
+                Related items:
+              </div>
+              <Grid
+                items={relatedItems || []}
+                location={location.pathname}
+                openItem={this.openItem}
+                loadMore={this.loadMoreItems}
+                loadingMore={loadingMore}
+              />
             </main>
           }
         <Footer />
@@ -40,14 +65,20 @@ class CategoryItem extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  console.log('123', state.items[ownProps.id]);
+  const data = state.items[ownProps.id] || {}
 
   return {
-    item: state.items[ownProps.id]
+    item: data.item,
+    relatedItems: data.relatedItems,
+    offset: data.offset,
+    loadingMore: state.items.loadingMore
   }
 }
 
 const mapDispatchToProps = {
-  requestItem
+  requestItem,
+  requestMoreItems
 }
 
 export default connect(

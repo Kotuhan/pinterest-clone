@@ -3,7 +3,9 @@
   display: flex;
   padding: 0px 20px;
   justify-content: space-around;
-  align-items: center; }
+  align-items: center;
+  background: white;
+  opacity: 0.9; }
   .header .search-bar {
     padding: 0px 20px;
     width: 100%;
